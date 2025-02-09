@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme, Avatar, Menu, MenuItem, ListItemIcon } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -12,10 +12,23 @@ import GeographyChart from "../../components/GeographyChart";
 import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
+import { AccountCircle, Settings, Logout, Key, Person } from "@mui/icons-material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box m="20px">
@@ -23,7 +36,7 @@ const Dashboard = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
-        <Box>
+        <Box display="flex" gap="10px">
           <Button
             sx={{
               backgroundColor: colors.blueAccent[700],
@@ -36,6 +49,50 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
+          
+          {/* <IconButton
+            onClick={handleClick}
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+            }}
+          >
+            <AccountCircle sx={{ color: colors.grey[100] }} />
+          </IconButton> */}
+          
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            onClick={handleClose}
+          >
+            <MenuItem onClick={() => navigate("/profile")}>
+              <ListItemIcon>
+                <Person fontSize="small" />
+              </ListItemIcon>
+              Profile
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/change-password")}>
+              <ListItemIcon>
+                <Key fontSize="small" />
+              </ListItemIcon>
+              Change Password
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/settings")}>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            <MenuItem onClick={() => {
+              // 处理登出逻辑
+              navigate("/login");
+            }}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
         </Box>
       </Box>
 

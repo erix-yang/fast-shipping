@@ -1,15 +1,35 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataTeam } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
+import { useState, useEffect } from "react";
+import { supabase } from "../../supabaseClient";
 
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [teamData, setTeamData] = useState([]);
+
+  useEffect(() => {
+    fetchTeamData();
+  }, []);
+
+  const fetchTeamData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('team')
+        .select('*');
+      
+      if (error) throw error;
+      setTeamData(data);
+    } catch (error) {
+      console.error('Error fetching team data:', error.message);
+    }
+  };
+
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -100,7 +120,7 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+        <DataGrid checkboxSelection rows={teamData} columns={columns} />
       </Box>
     </Box>
   );
