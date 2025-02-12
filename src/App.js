@@ -19,6 +19,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Login from "./scenes/auth/Login";
 import Register from "./scenes/auth/Register";
 import ResetPassword from "./scenes/auth/ResetPassword";
+import UpdatePassword from "./pages/UpdatePassword";
 import Profile from "./scenes/profile/Profile";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { LinearProgress } from "@mui/material";
@@ -62,6 +63,7 @@ function App() {
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/geography" element={<Geography />} />
+                  <Route path="/update-password" element={<UpdatePassword />} />
                 </Routes>
               </main>
             </div>
