@@ -23,6 +23,7 @@ import UpdatePassword from "./pages/UpdatePassword";
 import Profile from "./scenes/profile/Profile";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { LinearProgress } from "@mui/material";
+import Supplychain from "./scenes/supplychain";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -64,6 +65,7 @@ function App() {
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/geography" element={<Geography />} />
                   <Route path="/update-password" element={<UpdatePassword />} />
+                  <Route path="/supplychain" element={<Supplychain />} />
                 </Routes>
               </main>
             </div>
