@@ -15,44 +15,44 @@ const OrderDetailsDialog = ({ order, onClose }) => {
   const [itemTabData, setItemTabData] = useState([]);
   const [managementTabData, setManagementTabData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [formData, setFormData] = useState(order);
 
   useEffect(() => {
     const fetchData = async () => {
       if (order) {
         setLoading(true);
-        setError(null);
-        try {
-          await fetchItemTabData(order.id);
-          await fetchManagementTabData(order.id);
-        } catch (err) {
-          setError('Oops! Something went wrong.');
-          console.error('Error fetching data:', err);
-        } finally {
-          setLoading(false);
-        }
+        await fetchItemTabData(order.id);
+        await fetchManagementTabData(order.id);
+        setLoading(false);
       }
     };
     fetchData();
   }, [order]);
 
   const fetchItemTabData = async (productionOrderId) => {
-    const { data, error } = await supabase
-      .from('itemtab')
-      .select('*')
-      .eq('productionorderid', productionOrderId);
-    if (error) throw error;
-    setItemTabData(data);
+    try {
+      const { data, error } = await supabase
+        .from('itemtab')
+        .select('*')
+        .eq('productionorderid', productionOrderId);
+      if (error) throw error;
+      setItemTabData(data);
+    } catch (error) {
+      console.error('Error fetching item tab data:', error.message);
+    }
   };
 
   const fetchManagementTabData = async (productionOrderId) => {
-    const { data, error } = await supabase
-      .from('managementtab') // 假设您有这个表
-      .select('*')
-      .eq('productionorderid', productionOrderId);
-    if (error) throw error;
-    setManagementTabData(data);
+    try {
+      const { data, error } = await supabase
+        .from('managementtab') // 假设您有这个表
+        .select('*')
+        .eq('productionorderid', productionOrderId);
+      if (error) throw error;
+      setManagementTabData(data);
+    } catch (error) {
+      console.error('Error fetching management tab data:', error.message);
+    }
   };
 
   const handleItemEdit = (newData) => {
@@ -91,40 +91,40 @@ const OrderDetailsDialog = ({ order, onClose }) => {
           <Tab label="Item Tab" />
           <Tab label="Management Tab" />
         </Tabs>
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>{error}</p>
-        ) : (
-          <div>
-            <h3>Item Tab</h3>
-            <DataGrid
-              rows={itemTabData}
-              columns={itemColumns}
-              onCellEditCommit={(params) => {
-                const updatedRows = itemTabData.map((row) =>
-                  row.itemid === params.id ? { ...row, [params.field]: params.value } : row
-                );
-                handleItemEdit(updatedRows);
-              }}
-              autoHeight
-              pageSize={5}
-            />
-            <h3>Management Tab</h3>
-            <DataGrid
-              rows={managementTabData}
-              columns={managementColumns}
-              onCellEditCommit={(params) => {
-                const updatedRows = managementTabData.map((row) =>
-                  row.managementField === params.id ? { ...row, [params.field]: params.value } : row
-                );
-                handleManagementEdit(updatedRows);
-              }}
-              autoHeight
-              pageSize={5}
-            />
-          </div>
-        )}
+        <div>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div>
+              <h3>Item Tab</h3>
+              <DataGrid
+                rows={itemTabData}
+                columns={itemColumns}
+                onCellEditCommit={(params) => {
+                  const updatedRows = itemTabData.map((row) =>
+                    row.itemid === params.id ? { ...row, [params.field]: params.value } : row
+                  );
+                  handleItemEdit(updatedRows);
+                }}
+                autoHeight
+                pageSize={5}
+              />
+              <h3>Management Tab</h3>
+              <DataGrid
+                rows={managementTabData}
+                columns={managementColumns}
+                onCellEditCommit={(params) => {
+                  const updatedRows = managementTabData.map((row) =>
+                    row.itemid === params.id ? { ...row, [params.field]: params.value } : row
+                  );
+                  handleManagementEdit(updatedRows);
+                }}
+                autoHeight
+                pageSize={5}
+              />
+            </div>
+          )}
+        </div>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Close</Button>
@@ -175,7 +175,9 @@ const Supplychain = () => {
 
   const handleOrderClick = (order) => {
     setSelectedOrder(order);
-    setOpenOrderDialog(true);
+    setOpenOrderDialog(false); // 关闭当前对话框
+    // 跳转到 /orderDetail 页面
+    window.location.href = `/orderDetail/${order.id}`;
   };
 
   const columns = [
