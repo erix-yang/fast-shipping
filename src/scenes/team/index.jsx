@@ -100,6 +100,7 @@ const Team = () => {
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "none",
+            fontSize: '16px',
           },
           "& .name-column--cell": {
             color: colors.greenAccent[300],
@@ -107,6 +108,7 @@ const Team = () => {
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: colors.blueAccent[700],
             borderBottom: "none",
+            fontSize: '16px',
           },
           "& .MuiDataGrid-virtualScroller": {
             backgroundColor: colors.primary[400],

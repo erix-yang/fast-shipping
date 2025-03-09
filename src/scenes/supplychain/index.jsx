@@ -301,7 +301,7 @@ const Supplychain = () => {
       };
 
       if (dialogMode === 'add') {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('SupplyChain')
           .insert([formattedData]);
         
@@ -311,7 +311,7 @@ const Supplychain = () => {
         }
         alert('Order added successfully');
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('SupplyChain')
           .update(formattedData)
           .eq('id', selectedOrder.id);
@@ -327,7 +327,7 @@ const Supplychain = () => {
       await getSupplyChainData();
     } catch (error) {
       console.error('Error saving order:', error);
-      alert(`Error saving order: ${error.message}`);
+      alert(`Error saving order: ${JSON.stringify(error)}`);
     }
   };
 

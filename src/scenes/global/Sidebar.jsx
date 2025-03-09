@@ -161,7 +161,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
+            <Item
+              title="Revit Models"
+              to="/revitmodels"
+              icon={<MapOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            
             <Typography
               variant="h6"
               color={colors.grey[300]}
