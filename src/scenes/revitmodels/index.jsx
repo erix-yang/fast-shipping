@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Link, Typography } from "@mui/material";
 import { DataGrid, GridToolbar, GridToolbarContainer } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
@@ -301,7 +301,14 @@ const RevitModels = () => {
     <Box m="20px">
       <Header
         title="REVIT MODELS"
-        subtitle="Manage Your Revit Models"
+        subtitle={
+          <Typography>
+            Manage Your Revit Models. The downloaded BIM files can be viewed online at{' '}
+            <Link href="https://bimviewer.org/" target="_blank" rel="noopener noreferrer">
+              BIM Viewer
+            </Link>.
+          </Typography>
+        }
       />
       <Box
         m="40px 0 0 0"
